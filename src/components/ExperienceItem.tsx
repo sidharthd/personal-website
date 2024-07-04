@@ -11,8 +11,8 @@ export const ExperienceItem = (props: ExperienceItemProps) => {
 
   return (
     <>
-      <h4>{company}</h4>
       <p>{role}</p>
+      <p className="font-display">{company}</p>
       <p>
         {startDate} - {endDate}
       </p>

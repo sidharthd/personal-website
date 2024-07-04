@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Arvo, Lato } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const arvo = Arvo({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-arvo",
+});
+const lato = Lato({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-lato",
+});
 
 export const metadata: Metadata = {
   title: "Sidharth D",
@@ -16,7 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${arvo.variable} ${lato.variable} font-sans`}>
+        {children}
+      </body>
     </html>
   );
 }
