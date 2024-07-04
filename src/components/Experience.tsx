@@ -55,7 +55,7 @@ export const Experience = () => {
     <>
       <Heading>Professional experience</Heading>
       {experienceData.map((experience) => (
-        <ExperienceItem {...experience} />
+        <ExperienceItem key={experience.id} {...experience} />
       ))}
     </>
   );
