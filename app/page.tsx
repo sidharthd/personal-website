@@ -86,23 +86,49 @@ export default function Portfolio() {
     }
   }
 
-  // Fun animated text component with cycling text
+  // Fun animated text component with typewriter effect
   const PlayfulText = () => {
     const [currentIndex, setCurrentIndex] = useState(0)
+    const [displayText, setDisplayText] = useState("")
+    const [isTyping, setIsTyping] = useState(true)
 
     const keywords = [
       { text: "AI", icon: Brain, color: "purple" },
       { text: "code", icon: Code, color: "blue" },
-      { text: "curiosity", icon: Lightbulb, color: "yellow" },
+      { text: "intent", icon: Lightbulb, color: "yellow" },
     ]
 
     useEffect(() => {
-      const interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % keywords.length)
-      }, 3000) // Change every 3 seconds
+      const currentKeyword = keywords[currentIndex]
+      let timeoutId: NodeJS.Timeout
 
-      return () => clearInterval(interval)
-    }, [])
+      if (isTyping) {
+        // Typing effect
+        if (displayText.length < currentKeyword.text.length) {
+          timeoutId = setTimeout(() => {
+            setDisplayText(currentKeyword.text.slice(0, displayText.length + 1))
+          }, 150)
+        } else {
+          // Finished typing, wait before erasing
+          timeoutId = setTimeout(() => {
+            setIsTyping(false)
+          }, 2000)
+        }
+      } else {
+        // Erasing effect
+        if (displayText.length > 0) {
+          timeoutId = setTimeout(() => {
+            setDisplayText(displayText.slice(0, -1))
+          }, 100)
+        } else {
+          // Finished erasing, move to next word
+          setCurrentIndex((prev) => (prev + 1) % keywords.length)
+          setIsTyping(true)
+        }
+      }
+
+      return () => clearTimeout(timeoutId)
+    }, [displayText, isTyping, currentIndex])
 
     const currentKeyword = keywords[currentIndex]
     const CurrentIcon = currentKeyword.icon
@@ -112,18 +138,40 @@ export default function Portfolio() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2 }}
-        className="flex items-center justify-center gap-4 text-2xl lg:text-3xl font-semibold text-gray-700 dark:text-gray-300 leading-relaxed"
+        className="flex items-center justify-center gap-4 text-2xl lg:text-3xl font-semibold leading-relaxed"
       >
-        <span className="text-gray-700 dark:text-gray-300">I build with</span>
-
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0, y: 20, scale: 0.8 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -20, scale: 0.8 }}
+        <motion.span
+          className="font-medium"
+          animate={{
+            color:
+              currentKeyword.color === "purple"
+                ? "rgb(126 34 206)" // purple-700
+                : currentKeyword.color === "blue"
+                  ? "rgb(29 78 216)" // blue-700
+                  : "rgb(161 98 7)", // yellow-700
+          }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="flex items-center gap-3"
         >
+          I build with
+        </motion.span>
+
+        <div className="flex items-center gap-3 min-w-[200px]">
+          <motion.span
+            className={`
+            font-bold min-w-[80px] text-left
+            ${currentKeyword.color === "purple" ? "text-purple-700 dark:text-purple-300" : ""}
+            ${currentKeyword.color === "blue" ? "text-blue-700 dark:text-blue-300" : ""}
+            ${currentKeyword.color === "yellow" ? "text-yellow-700 dark:text-yellow-300" : ""}
+          `}
+          >
+            {displayText}
+            <motion.span
+              animate={{ opacity: [1, 0] }}
+              transition={{ duration: 0.8, repeat: Number.POSITIVE_INFINITY }}
+              className="inline-block w-0.5 h-8 bg-current ml-1"
+            />
+          </motion.span>
+
           <motion.div
             className={`
             w-12 h-12 rounded-2xl flex items-center justify-center
@@ -132,16 +180,10 @@ export default function Portfolio() {
             ${currentKeyword.color === "yellow" ? "bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30" : ""}
           `}
             animate={{
-              scale: [1, 1.1, 1],
-              rotate:
-                currentKeyword.color === "purple"
-                  ? [0, 360]
-                  : currentKeyword.color === "blue"
-                    ? [0, 180, 360]
-                    : [0, 15, -15, 0],
+              scale: [1, 1.05, 1],
             }}
             transition={{
-              duration: currentKeyword.color === "purple" ? 8 : currentKeyword.color === "blue" ? 2 : 3,
+              duration: 4,
               repeat: Number.POSITIVE_INFINITY,
               ease: "easeInOut",
             }}
@@ -155,45 +197,7 @@ export default function Portfolio() {
             `}
             />
           </motion.div>
-
-          <motion.span
-            className={`
-            font-bold
-            ${currentKeyword.color === "purple" ? "text-purple-700 dark:text-purple-300" : ""}
-            ${currentKeyword.color === "blue" ? "text-blue-700 dark:text-blue-300" : ""}
-            ${currentKeyword.color === "yellow" ? "text-yellow-700 dark:text-yellow-300" : ""}
-          `}
-            animate={{
-              textShadow: [
-                "0 0 0px rgba(0,0,0,0)",
-                `0 0 10px ${currentKeyword.color === "purple" ? "rgba(168, 85, 247, 0.3)" : currentKeyword.color === "blue" ? "rgba(59, 130, 246, 0.3)" : "rgba(251, 191, 36, 0.3)"}`,
-                "0 0 0px rgba(0,0,0,0)",
-              ],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "easeInOut",
-            }}
-          >
-            {currentKeyword.text}
-          </motion.span>
-        </motion.div>
-
-        <motion.span
-          animate={{
-            scale: [1, 1.3, 1],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Number.POSITIVE_INFINITY,
-            delay: 1,
-          }}
-          className="text-3xl"
-        >
-          ✨
-        </motion.span>
+        </div>
       </motion.div>
     )
   }
@@ -779,8 +783,8 @@ export default function Portfolio() {
                     {
                       icon: Linkedin,
                       label: "LinkedIn",
-                      value: "linkedin.com/in/sidharth/",
-                      href: "https://linkedin.com/in/sidharth/",
+                      value: "linkedin.com/in/sidharthd/",
+                      href: "https://linkedin.com/in/sidharthd/",
                       color: "purple",
                     },
                   ].map((contact, index) => (
@@ -1000,7 +1004,7 @@ export default function Portfolio() {
                 <Mail className="w-5 h-5" />
               </a>
               <a
-                href="https://linkedin.com/in/sidharth/"
+                href="https://linkedin.com/in/sidharthd/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-rose-500 transition-colors"
