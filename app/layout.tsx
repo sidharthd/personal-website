@@ -7,8 +7,67 @@ import { ThemeProvider } from "@/contexts/ThemeContext"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Sidharth Devaraj - Frontend Specialist",
-  description: "Senior Software Engineer specializing in frontend development with 7+ years of experience",
+  title: "Sidharth Devaraj - Senior Software Engineer",
+  description:
+    "Senior Software Engineer and Frontend Specialist with 7+ years of experience building exceptional user interfaces. Expert in React, TypeScript, JavaScript, and modern frontend technologies. Available for new opportunities.",
+  keywords: [
+    "Sidharth Devaraj",
+    "Senior Software Engineer",
+    "Frontend Developer",
+    "React Developer",
+    "TypeScript",
+    "JavaScript",
+    "Frontend Specialist",
+    "Software Engineer",
+    "Web Developer",
+    "UI/UX Developer",
+    "Full Stack Developer",
+    "Remote Developer",
+    "India",
+    "Thiruvananthapuram",
+  ],
+  authors: [{ name: "Sidharth Devaraj" }],
+  creator: "Sidharth Devaraj",
+  publisher: "Sidharth Devaraj",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://sidh.dev",
+    title: "Sidharth Devaraj - Senior Software Engineer",
+    description:
+      "Senior Software Engineer and Frontend Specialist with 7+ years of experience building exceptional user interfaces. Expert in React, TypeScript, JavaScript, and modern frontend technologies.",
+    siteName: "Sidharth Devaraj Portfolio",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Sidharth Devaraj - Senior Software Engineer",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sidharth Devaraj - Senior Software Engineer",
+    description:
+      "Senior Software Engineer and Frontend Specialist with 7+ years of experience building exceptional user interfaces.",
+    images: ["/og-image.jpg"],
+  },
+  alternates: {
+    canonical: "https://sidh.dev",
+  },
+  category: "technology",
     generator: 'v0.dev'
 }
 
@@ -19,6 +78,60 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#f43f5e" />
+        <link rel="canonical" href="https://sidh.dev" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Sidharth Devaraj",
+              jobTitle: "Senior Software Engineer",
+              description: "Senior Software Engineer and Frontend Specialist with 7+ years of experience",
+              url: "https://sidh.dev",
+              email: "sidharth@sidh.dev",
+              telephone: "+91-97461-63694",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Thiruvananthapuram",
+                addressCountry: "India",
+              },
+              sameAs: ["https://linkedin.com/in/sidharth/", "https://github.com/sidharth"],
+              knowsAbout: [
+                "JavaScript",
+                "TypeScript",
+                "React",
+                "Frontend Development",
+                "Software Engineering",
+                "Web Development",
+                "User Interface Design",
+              ],
+              alumniOf: [
+                {
+                  "@type": "EducationalOrganization",
+                  name: "College of Engineering, Thiruvananthapuram",
+                  description: "M.Tech in Information Security",
+                },
+                {
+                  "@type": "EducationalOrganization",
+                  name: "College of Engineering, Chengannur",
+                  description: "B.Tech in Computer Science",
+                },
+              ],
+              worksFor: [
+                {
+                  "@type": "Organization",
+                  name: "1Centre",
+                  description: "Senior Front-End Engineer",
+                },
+              ],
+            }),
+          }}
+        />
+      </head>
       <body className={inter.className}>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
