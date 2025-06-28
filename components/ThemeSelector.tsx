@@ -19,7 +19,7 @@ export function ThemeSelector() {
   const CurrentIcon = currentTheme.icon
 
   return (
-    <div className="fixed top-24 right-6 z-50 pointer-events-auto">
+    <div className="fixed top-24 right-6 z-50">
       <div className="relative">
         {/* Main Toggle Button */}
         <button

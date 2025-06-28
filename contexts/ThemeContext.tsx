@@ -60,11 +60,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }, [theme])
 
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme }} suppressHydrationWarning>
-      {children}
-    </ThemeContext.Provider>
-  )
+  return <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme }}>{children}</ThemeContext.Provider>
 }
 
 export function useTheme() {
