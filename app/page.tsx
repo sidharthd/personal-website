@@ -159,7 +159,7 @@ export default function Portfolio() {
             className="mt-8 group cursor-pointer"
           >
             <div className="inline-flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border border-green-200 dark:border-green-700 rounded-full shadow-sm hover:shadow-md hover:border-green-300 dark:hover:border-green-600 transition-all duration-300 group-hover:scale-105 backdrop-blur-sm">
-              <div className="w-3 h-3 bg-green-400 dark:bg-green-400 rounded-full animate-pulse group-hover:bg-green-500 dark:group-hover:bg-green-300 transition-colors" />
+              <div className="w-3 h-3 bg-green-400 dark:bg-green-400 rounded-full animate-pulse group-hover:bg-green-500 dark:group-hover:bg-green-300 transition-colors flex-shrink-0" />
               <p className="text-sm font-medium text-green-800 dark:text-green-200 group-hover:text-green-900 dark:group-hover:text-green-100 transition-colors">
                 Currently exploring new opportunities to collaborate with innovative teams
               </p>
