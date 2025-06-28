@@ -86,71 +86,111 @@ export default function Portfolio() {
     }
   }
 
-  // Fun animated text component
+  // Fun animated text component with cycling text
   const PlayfulText = () => {
+    const [currentIndex, setCurrentIndex] = useState(0)
+
+    const keywords = [
+      { text: "AI", icon: Brain, color: "purple" },
+      { text: "code", icon: Code, color: "blue" },
+      { text: "curiosity", icon: Lightbulb, color: "yellow" },
+    ]
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % keywords.length)
+      }, 3000) // Change every 3 seconds
+
+      return () => clearInterval(interval)
+    }, [])
+
+    const currentKeyword = keywords[currentIndex]
+    const CurrentIcon = currentKeyword.icon
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2 }}
-        className="flex flex-wrap items-center justify-center gap-3 text-lg lg:text-xl text-gray-700 dark:text-gray-300 leading-relaxed"
+        className="flex items-center justify-center gap-4 text-2xl lg:text-3xl font-semibold text-gray-700 dark:text-gray-300 leading-relaxed"
       >
-        <span>I build with</span>
+        <span className="text-gray-700 dark:text-gray-300">I build with</span>
 
-        {/* AI Section */}
         <motion.div
-          whileHover={{ scale: 1.1, rotate: 5 }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full border border-purple-200 dark:border-purple-700 cursor-pointer"
+          key={currentIndex}
+          initial={{ opacity: 0, y: 20, scale: 0.8 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -20, scale: 0.8 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          className="flex items-center gap-3"
         >
           <motion.div
-            animate={{ rotate: [0, 360] }}
-            transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-          >
-            <Brain className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-          </motion.div>
-          <span className="font-semibold text-purple-700 dark:text-purple-300">AI</span>
-        </motion.div>
-
-        <span>,</span>
-
-        {/* Code Section */}
-        <motion.div
-          whileHover={{ scale: 1.1, rotate: -5 }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30 rounded-full border border-blue-200 dark:border-blue-700 cursor-pointer"
-        >
-          <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}>
-            <Code className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-          </motion.div>
-          <span className="font-semibold text-blue-700 dark:text-blue-300">code</span>
-        </motion.div>
-
-        <span>, and</span>
-
-        {/* Curiosity Section */}
-        <motion.div
-          whileHover={{ scale: 1.1, rotate: 5 }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 rounded-full border border-yellow-200 dark:border-yellow-700 cursor-pointer"
-        >
-          <motion.div
+            className={`
+            w-12 h-12 rounded-2xl flex items-center justify-center
+            ${currentKeyword.color === "purple" ? "bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30" : ""}
+            ${currentKeyword.color === "blue" ? "bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30" : ""}
+            ${currentKeyword.color === "yellow" ? "bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30" : ""}
+          `}
             animate={{
-              rotate: [0, 15, -15, 0],
               scale: [1, 1.1, 1],
+              rotate:
+                currentKeyword.color === "purple"
+                  ? [0, 360]
+                  : currentKeyword.color === "blue"
+                    ? [0, 180, 360]
+                    : [0, 15, -15, 0],
             }}
             transition={{
-              duration: 3,
+              duration: currentKeyword.color === "purple" ? 8 : currentKeyword.color === "blue" ? 2 : 3,
               repeat: Number.POSITIVE_INFINITY,
               ease: "easeInOut",
             }}
           >
-            <Lightbulb className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+            <CurrentIcon
+              className={`
+              w-7 h-7
+              ${currentKeyword.color === "purple" ? "text-purple-600 dark:text-purple-400" : ""}
+              ${currentKeyword.color === "blue" ? "text-blue-600 dark:text-blue-400" : ""}
+              ${currentKeyword.color === "yellow" ? "text-yellow-600 dark:text-yellow-400" : ""}
+            `}
+            />
           </motion.div>
-          <span className="font-semibold text-yellow-700 dark:text-yellow-300">curiosity</span>
+
+          <motion.span
+            className={`
+            font-bold
+            ${currentKeyword.color === "purple" ? "text-purple-700 dark:text-purple-300" : ""}
+            ${currentKeyword.color === "blue" ? "text-blue-700 dark:text-blue-300" : ""}
+            ${currentKeyword.color === "yellow" ? "text-yellow-700 dark:text-yellow-300" : ""}
+          `}
+            animate={{
+              textShadow: [
+                "0 0 0px rgba(0,0,0,0)",
+                `0 0 10px ${currentKeyword.color === "purple" ? "rgba(168, 85, 247, 0.3)" : currentKeyword.color === "blue" ? "rgba(59, 130, 246, 0.3)" : "rgba(251, 191, 36, 0.3)"}`,
+                "0 0 0px rgba(0,0,0,0)",
+              ],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "easeInOut",
+            }}
+          >
+            {currentKeyword.text}
+          </motion.span>
         </motion.div>
 
         <motion.span
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, delay: 1 }}
-          className="text-2xl"
+          animate={{
+            scale: [1, 1.3, 1],
+            rotate: [0, 180, 360],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Number.POSITIVE_INFINITY,
+            delay: 1,
+          }}
+          className="text-3xl"
         >
           ✨
         </motion.span>
