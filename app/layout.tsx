@@ -3,13 +3,13 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/contexts/ThemeContext"
+import { DesignProvider } from "@/contexts/DesignContext"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Sidharth Devaraj - Senior Software Engineer",
-  description:
-    "Senior Software Engineer and Frontend Specialist with 7+ years of experience building exceptional user interfaces. Expert in React, TypeScript, JavaScript, and modern frontend technologies. Available for new opportunities.",
+  description: "Frontend specialist bridging technical excellence and product strategy",
   keywords: [
     "Sidharth Devaraj",
     "Senior Software Engineer",
@@ -45,8 +45,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://sidh.dev",
     title: "Sidharth Devaraj - Senior Software Engineer",
-    description:
-      "Senior Software Engineer and Frontend Specialist with 7+ years of experience building exceptional user interfaces. Expert in React, TypeScript, JavaScript, and modern frontend technologies.",
+    description: "Frontend specialist bridging technical excellence and product strategy",
     siteName: "Sidharth Devaraj Portfolio",
     images: [
       {
@@ -60,8 +59,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Sidharth Devaraj - Senior Software Engineer",
-    description:
-      "Senior Software Engineer and Frontend Specialist with 7+ years of experience building exceptional user interfaces.",
+    description: "Frontend specialist bridging technical excellence and product strategy",
     images: ["/og-image.jpg"],
   },
   alternates: {
@@ -77,7 +75,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#f43f5e" />
@@ -133,7 +131,9 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <DesignProvider>{children}</DesignProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

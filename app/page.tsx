@@ -12,18 +12,27 @@ import {
   Linkedin,
   ChevronDown,
   ArrowRight,
-  Brain,
+  Bot,
   Code,
-  Lightbulb,
+  Target,
+  Heart,
+  Terminal,
+  Cpu,
+  Database,
+  Zap,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ThemeSelector } from "@/components/ThemeSelector"
+import { DesignToggle } from "@/components/DesignToggle"
+import { MatrixRain } from "@/components/MatrixRain"
+import { useDesign } from "@/contexts/DesignContext"
 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("hero")
   const { scrollYProgress } = useScroll()
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"])
+  const { design } = useDesign()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -86,125 +95,943 @@ export default function Portfolio() {
     }
   }
 
-  // Fun animated text component with typewriter effect
+  // Creative morphing text component with gradient sweep effect
   const PlayfulText = () => {
     const [currentIndex, setCurrentIndex] = useState(0)
-    const [displayText, setDisplayText] = useState("")
-    const [isTyping, setIsTyping] = useState(true)
-
     const keywords = [
-      { text: "AI", icon: Brain, color: "purple" },
-      { text: "code", icon: Code, color: "blue" },
-      { text: "intent", icon: Lightbulb, color: "yellow" },
+      { text: "empathy", icon: Heart, color: "rose", gradient: "from-rose-600 to-pink-600" },
+      { text: "AI", icon: Bot, color: "purple", gradient: "from-purple-600 to-pink-600" },
+      { text: "code", icon: Code, color: "blue", gradient: "from-blue-600 to-cyan-600" },
+      { text: "intent", icon: Target, color: "yellow", gradient: "from-yellow-600 to-orange-600" },
     ]
 
     useEffect(() => {
-      const currentKeyword = keywords[currentIndex]
-      let timeoutId: NodeJS.Timeout
-
-      if (isTyping) {
-        // Typing effect
-        if (displayText.length < currentKeyword.text.length) {
-          timeoutId = setTimeout(() => {
-            setDisplayText(currentKeyword.text.slice(0, displayText.length + 1))
-          }, 150)
-        } else {
-          // Finished typing, wait before erasing
-          timeoutId = setTimeout(() => {
-            setIsTyping(false)
-          }, 2000)
-        }
-      } else {
-        // Erasing effect
-        if (displayText.length > 0) {
-          timeoutId = setTimeout(() => {
-            setDisplayText(displayText.slice(0, -1))
-          }, 100)
-        } else {
-          // Finished erasing, move to next word
+      // Add a delay before starting the animation cycle to prevent initial re-render
+      const startDelay = setTimeout(() => {
+        const interval = setInterval(() => {
           setCurrentIndex((prev) => (prev + 1) % keywords.length)
-          setIsTyping(true)
-        }
-      }
+        }, 3000)
 
-      return () => clearTimeout(timeoutId)
-    }, [displayText, isTyping, currentIndex])
+        return () => clearInterval(interval)
+      }, 2000) // Wait 2 seconds before starting the cycle
+
+      return () => clearTimeout(startDelay)
+    }, [])
 
     const currentKeyword = keywords[currentIndex]
     const CurrentIcon = currentKeyword.icon
+
+    if (design === "geeky") {
+      return (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 }}
+          className="flex items-center justify-center gap-6 text-2xl lg:text-3xl font-mono leading-relaxed"
+        >
+          <span className="text-green-400 neon-glow">{">"} I build with</span>
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative flex items-center gap-4"
+          >
+            <motion.span
+              className="font-bold text-2xl text-green-400 neon-glow typewriter"
+              data-text={currentKeyword.text}
+            >
+              {currentKeyword.text}
+            </motion.span>
+            <motion.div
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+              className="w-8 h-8 border-2 border-green-400 flex items-center justify-center pixel-corners"
+            >
+              <CurrentIcon className="w-4 h-4 text-green-400" />
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      )
+    }
 
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2 }}
-        className="flex items-center justify-center gap-4 text-2xl lg:text-3xl font-semibold leading-relaxed"
+        className="flex items-center justify-center gap-6 text-2xl lg:text-3xl font-semibold leading-relaxed"
       >
-        <motion.span
-          className="font-medium"
-          animate={{
-            color:
-              currentKeyword.color === "purple"
-                ? "rgb(126 34 206)" // purple-700
-                : currentKeyword.color === "blue"
-                  ? "rgb(29 78 216)" // blue-700
-                  : "rgb(161 98 7)", // yellow-700
+        <span className="text-gray-700 dark:text-gray-300">I build with</span>
+
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.8, y: -20 }}
+          transition={{
+            duration: 0.8,
+            ease: [0.25, 0.46, 0.45, 0.94],
+            opacity: { duration: 0.6 },
+            scale: { duration: 0.8 },
+            y: { duration: 0.8 },
           }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
+          className="relative flex items-center gap-4"
         >
-          I build with
-        </motion.span>
-
-        <div className="flex items-center gap-3 min-w-[200px]">
-          <motion.span
-            className={`
-            font-bold min-w-[80px] text-left
-            ${currentKeyword.color === "purple" ? "text-purple-700 dark:text-purple-300" : ""}
-            ${currentKeyword.color === "blue" ? "text-blue-700 dark:text-blue-300" : ""}
-            ${currentKeyword.color === "yellow" ? "text-yellow-700 dark:text-yellow-300" : ""}
-          `}
-          >
-            {displayText}
-            <motion.span
-              animate={{ opacity: [1, 0] }}
-              transition={{ duration: 0.8, repeat: Number.POSITIVE_INFINITY }}
-              className="inline-block w-0.5 h-8 bg-current ml-1"
-            />
-          </motion.span>
-
+          {/* Animated background glow */}
           <motion.div
-            className={`
-            w-12 h-12 rounded-2xl flex items-center justify-center
-            ${currentKeyword.color === "purple" ? "bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30" : ""}
-            ${currentKeyword.color === "blue" ? "bg-gradient-to-r from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30" : ""}
-            ${currentKeyword.color === "yellow" ? "bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30" : ""}
-          `}
+            className="absolute inset-0 rounded-2xl opacity-20 blur-xl"
             animate={{
-              scale: [1, 1.05, 1],
+              background:
+                currentKeyword.color === "rose"
+                  ? "linear-gradient(135deg, rgb(244 63 94), rgb(219 39 119))"
+                  : currentKeyword.color === "purple"
+                    ? "linear-gradient(135deg, rgb(147 51 234), rgb(219 39 119))"
+                    : currentKeyword.color === "blue"
+                      ? "linear-gradient(135deg, rgb(37 99 235), rgb(6 182 212))"
+                      : "linear-gradient(135deg, rgb(202 138 4), rgb(234 88 12))",
+            }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+          />
+
+          {/* Keyword text with enhanced animation */}
+          <motion.span
+            className={`font-bold text-2xl bg-gradient-to-r ${currentKeyword.gradient} bg-clip-text text-transparent relative z-10`}
+            animate={{
+              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
             }}
             transition={{
-              duration: 4,
+              duration: 3,
               repeat: Number.POSITIVE_INFINITY,
               ease: "easeInOut",
             }}
+            style={{
+              backgroundSize: "200% 200%",
+            }}
           >
-            <CurrentIcon
-              className={`
-              w-7 h-7
-              ${currentKeyword.color === "purple" ? "text-purple-600 dark:text-purple-400" : ""}
-              ${currentKeyword.color === "blue" ? "text-blue-600 dark:text-blue-400" : ""}
-              ${currentKeyword.color === "yellow" ? "text-yellow-600 dark:text-yellow-400" : ""}
-            `}
-            />
+            {currentKeyword.text}
+          </motion.span>
+
+          {/* Enhanced icon with fluid rotation and morphing */}
+          <motion.div
+            className="relative"
+            animate={{
+              rotate: [0, 360],
+            }}
+            transition={{
+              duration: 12,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "linear",
+            }}
+          >
+            <motion.div
+              className={`w-8 h-8 rounded-2xl bg-gradient-to-br ${currentKeyword.gradient} flex items-center justify-center shadow-xl relative overflow-hidden`}
+              animate={{
+                scale: [1, 1.15, 1],
+                borderRadius: ["1rem", "1.5rem", "1rem"],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "easeInOut",
+              }}
+            >
+              {/* Animated background pattern */}
+              <motion.div
+                className="absolute inset-0 opacity-30"
+                animate={{
+                  background: [
+                    "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 0%, transparent 50%)",
+                    "radial-gradient(circle at 80% 80%, rgba(255,255,255,0.3) 0%, transparent 50%)",
+                    "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 0%, transparent 50%)",
+                  ],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "easeInOut",
+                }}
+              />
+
+              <motion.div
+                animate={{
+                  scale: [1, 1.1, 1],
+                  rotate: [0, -360],
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "linear",
+                }}
+              >
+                <CurrentIcon className="w-4 h-4 text-white relative z-10" />
+              </motion.div>
+            </motion.div>
           </motion.div>
-        </div>
+
+          {/* Enhanced floating particles with more fluid movement */}
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={i}
+              className={`absolute w-1.5 h-1.5 rounded-full bg-gradient-to-r ${currentKeyword.gradient} opacity-40`}
+              animate={{
+                x: [0, Math.sin(i * 1.2) * 60, Math.cos(i * 0.8) * 40, 0],
+                y: [0, Math.cos(i * 1.5) * 50, Math.sin(i * 0.9) * 35, 0],
+                opacity: [0, 0.6, 0.8, 0.4, 0],
+                scale: [0.5, 1.2, 0.8, 1, 0.5],
+              }}
+              transition={{
+                duration: 4 + i * 0.5,
+                repeat: Number.POSITIVE_INFINITY,
+                delay: i * 0.3,
+                ease: "easeInOut",
+              }}
+              style={{
+                left: `${15 + i * 15}%`,
+                top: `${20 + i * 10}%`,
+              }}
+            />
+          ))}
+        </motion.div>
       </motion.div>
     )
   }
 
+  if (design === "geeky") {
+    return (
+      <div className="min-h-screen bg-black text-green-400 relative overflow-x-hidden font-mono scan-lines">
+        <MatrixRain />
+        <DesignToggle />
+
+        {/* Terminal-style Navigation */}
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-xl border-b border-green-400">
+          <div className="max-w-7xl mx-auto px-8 py-4">
+            <div className="flex justify-between items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="text-xl font-bold text-green-400 neon-glow"
+              >
+                <Terminal className="inline w-6 h-6 mr-2" />
+                sidharth@portfolio:~$
+              </motion.div>
+              <div className="hidden md:flex items-center space-x-8">
+                {["About", "Skills", "Experience", "Education", "Contact"].map((item, index) => (
+                  <motion.button
+                    key={item}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    onClick={() => scrollToSection(item.toLowerCase())}
+                    className={`text-sm font-medium transition-all duration-300 hover:text-green-300 relative ${
+                      activeSection === item.toLowerCase() ? "text-green-300 neon-glow" : "text-green-400"
+                    }`}
+                  >
+                    {">"} {item.toLowerCase()}
+                    {activeSection === item.toLowerCase() && (
+                      <motion.div
+                        layoutId="activeSection"
+                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-green-400"
+                      />
+                    )}
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <main className="relative z-10">
+          {/* Hero Section */}
+          <section id="hero" className="min-h-screen flex items-center relative">
+            <div className="max-w-7xl mx-auto px-8 py-20 flex items-center justify-center">
+              <div className="text-center space-y-16 max-w-5xl">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="space-y-12"
+                >
+                  <div className="space-y-8">
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="inline-flex items-center space-x-2 px-4 py-2 terminal-border bg-black/50 text-green-400 rounded text-sm font-medium"
+                    >
+                      <motion.div
+                        animate={{ opacity: [1, 0, 1] }}
+                        transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY }}
+                        className="w-2 h-2 bg-green-400 rounded-full"
+                      />
+                      <span>{">"} status: available_for_opportunities</span>
+                    </motion.div>
+
+                    <h1
+                      className="text-6xl lg:text-8xl font-black text-green-400 leading-none tracking-tight neon-glow glitch-text"
+                      data-text="SIDHARTH DEVARAJ"
+                    >
+                      SIDHARTH
+                      <br />
+                      <span className="text-green-300">DEVARAJ</span>
+                    </h1>
+                  </div>
+
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.9 }}
+                    className="space-y-10"
+                  >
+                    <h2 className="text-xl lg:text-2xl font-medium text-green-300 tracking-wide">
+                      {">"} SENIOR_SOFTWARE_ENGINEER.exe
+                    </h2>
+
+                    <PlayfulText />
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.4 }}
+                    className="flex flex-col sm:flex-row gap-6 justify-center pt-8"
+                  >
+                    <button
+                      onClick={() => scrollToSection("contact")}
+                      className="terminal-border bg-black hover:bg-green-400/10 text-green-400 px-8 py-4 text-lg font-medium group transition-all duration-300 pixel-corners"
+                    >
+                      {">"} initiate_connection()
+                      <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                    <button
+                      onClick={() => scrollToSection("experience")}
+                      className="border-2 border-green-400/50 text-green-400 hover:border-green-400 hover:bg-green-400/10 px-8 py-4 text-lg font-medium transition-all duration-300 pixel-corners"
+                    >
+                      {">"} view_experience.log
+                    </button>
+                  </motion.div>
+                </motion.div>
+              </div>
+            </div>
+
+            {/* Scroll Indicator */}
+            <motion.button
+              onClick={() => scrollToSection("about")}
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+              className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer hover:text-green-300 transition-colors"
+            >
+              <ChevronDown className="w-8 h-8 text-green-400" />
+            </motion.button>
+          </section>
+
+          {/* About Section */}
+          <section id="about" className="py-32 bg-black/50 terminal-border">
+            <div className="max-w-7xl mx-auto px-8">
+              <div className="grid lg:grid-cols-12 gap-16 items-center">
+                <div className="lg:col-span-4">
+                  <motion.div
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
+                    className="space-y-6"
+                  >
+                    <div className="space-y-4">
+                      <div className="w-12 h-1 bg-green-400" />
+                      <h2 className="text-5xl font-black text-green-400 neon-glow">{">"} ABOUT.md</h2>
+                    </div>
+
+                    <div className="w-32 h-32 terminal-border bg-black/50 flex items-center justify-center pixel-corners">
+                      <Cpu className="w-16 h-16 text-green-400" />
+                    </div>
+                  </motion.div>
+                </div>
+
+                <div className="lg:col-span-8">
+                  <motion.div
+                    initial={{ opacity: 0, x: 30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    viewport={{ once: true }}
+                    className="space-y-8 font-mono"
+                  >
+                    <p className="text-2xl font-light text-green-300 leading-relaxed">
+                      {"// Frontend specialist bridging technical excellence and product strategy"}
+                    </p>
+
+                    <div className="space-y-4 text-green-400">
+                      <p>
+                        <span className="text-green-300">const</span> experience ={" "}
+                        <span className="text-yellow-400">"7+ years"</span>;
+                      </p>
+                      <p>
+                        <span className="text-green-300">const</span> focus ={" "}
+                        <span className="text-yellow-400">"exceptional user interfaces"</span>;
+                      </p>
+                      <p>
+                        <span className="text-green-300">const</span> approach ={" "}
+                        <span className="text-yellow-400">"frontend expertise + product thinking"</span>;
+                      </p>
+                    </div>
+
+                    <p className="text-lg text-green-400 leading-relaxed">
+                      {"// Specializing in end-to-end project delivery, mentoring developers,"}
+                      <br />
+                      {"// and translating complex technical concepts into strategic business value."}
+                    </p>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Skills Section */}
+          <section id="skills" className="py-32 bg-black">
+            <div className="max-w-7xl mx-auto px-8">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className="text-center mb-20"
+              >
+                <div className="space-y-4">
+                  <h2 className="text-5xl font-black text-green-400 neon-glow">{">"} SKILLS.json</h2>
+                  <div className="w-24 h-1 bg-green-400 mx-auto" />
+                </div>
+              </motion.div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[
+                  {
+                    title: "core_technologies",
+                    icon: Database,
+                    categories: [
+                      {
+                        name: "languages",
+                        skills: ["JavaScript", "TypeScript", "Python"],
+                      },
+                      { name: "frontend", skills: ["React", "HTML", "CSS", "React Native"] },
+                      { name: "backend", skills: ["Node.js", "Express.js", "REST API", "PostgreSQL"] },
+                    ],
+                  },
+                  {
+                    title: "dev_tools",
+                    icon: Zap,
+                    categories: [
+                      { name: "design_systems", skills: ["Material UI", "Ant Design", "Chakra UI"] },
+                      { name: "testing", skills: ["Jest", "Vitest", "React Testing Library"] },
+                      { name: "devops", skills: ["AWS", "DigitalOcean", "Linux", "NGINX"] },
+                    ],
+                  },
+                  {
+                    title: "soft_skills",
+                    icon: Terminal,
+                    categories: [
+                      {
+                        name: "leadership",
+                        skills: ["Project Management", "Technical Mentorship", "Code Reviews"],
+                      },
+                      {
+                        name: "communication",
+                        skills: ["Client Collaboration", "Technical Documentation"],
+                      },
+                      { name: "methodologies", skills: ["Git", "Agile", "Jira"] },
+                    ],
+                  },
+                ].map((section, index) => (
+                  <motion.div
+                    key={section.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="group"
+                  >
+                    <div className="terminal-border bg-black/50 p-8 pixel-corners hover:bg-green-400/5 transition-all duration-300 h-full">
+                      <div className="space-y-6">
+                        <div className="flex items-center space-x-4">
+                          <section.icon className="w-6 h-6 text-green-400" />
+                          <h3 className="text-xl font-bold text-green-400 font-mono">{section.title}</h3>
+                        </div>
+
+                        <div className="space-y-6 font-mono">
+                          {section.categories.map((category) => (
+                            <div key={category.name} className="space-y-3">
+                              <p className="text-sm font-medium text-green-300 uppercase tracking-wide">
+                                {category.name}:
+                              </p>
+                              <div className="flex flex-wrap gap-2">
+                                {category.skills.map((skill) => (
+                                  <span
+                                    key={skill}
+                                    className="px-3 py-1 text-xs font-medium bg-green-400/10 text-green-400 border border-green-400/30 pixel-corners"
+                                  >
+                                    {skill}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Experience Section */}
+          <section id="experience" className="py-32 bg-black/50">
+            <div className="max-w-7xl mx-auto px-8">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className="text-center mb-20"
+              >
+                <div className="space-y-4">
+                  <h2 className="text-5xl font-black text-green-400 neon-glow">{">"} EXPERIENCE.log</h2>
+                  <div className="w-24 h-1 bg-green-400 mx-auto" />
+                </div>
+              </motion.div>
+
+              <div className="space-y-12">
+                {[
+                  {
+                    title: "Senior Front-End Engineer",
+                    company: "1Centre",
+                    url: "https://1centre.com/",
+                    period: "Jul 2023 – May 2025",
+                    location: "Remote",
+                    description: "Trade-credit consumer onboarding and compliance platform.",
+                    achievements: [
+                      "Developed high-impact features based on user needs",
+                      "Diagnosed and resolved critical performance issues",
+                      "Refactored codebase for improved reliability",
+                      "Architected modern front-end with Svelte",
+                    ],
+                  },
+                  {
+                    title: "Senior Front-End Engineer",
+                    company: "Relay",
+                    url: "https://relay.ai/",
+                    period: "Apr 2022 – Apr 2023",
+                    location: "Remote",
+                    description: "Platform automating business cashflows through incentivised early invoice payments.",
+                    achievements: [
+                      "Architected and built front-end web app from ground up",
+                      "Collaborated closely with founders to realize their vision",
+                    ],
+                  },
+                  {
+                    title: "Co-Founder & CTO",
+                    company: "Firstbyte Digital Solutions",
+                    url: "https://www.firstbytedigital.com/",
+                    period: "Nov 2017 – Mar 2022",
+                    location: "Thiruvananthapuram, India",
+                    description: "Full-stack development studio serving small businesses and startups.",
+                    achievements: [
+                      "Managed cross-functional team overseeing design and development",
+                      "Oversaw complete project lifecycle from scoping to deployment",
+                      "Established code review culture and mentored developers",
+                      "Conducted React Native workshops for students and professionals",
+                    ],
+                  },
+                ].map((job, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
+                    className="group"
+                  >
+                    <div className="terminal-border bg-black/50 p-8 pixel-corners hover:bg-green-400/5 transition-all duration-300">
+                      <div className="grid lg:grid-cols-12 gap-8">
+                        <div className="lg:col-span-4 space-y-4">
+                          <div className="space-y-2">
+                            <h3 className="text-2xl font-bold text-green-400 font-mono">{job.title}</h3>
+                            {job.company && (
+                              <div className="flex items-center space-x-2">
+                                {job.url ? (
+                                  <a
+                                    href={job.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-green-300 hover:text-green-400 font-medium inline-flex items-center gap-2 transition-colors"
+                                  >
+                                    {">"} {job.company}
+                                    <ExternalLink className="w-4 h-4" />
+                                  </a>
+                                ) : (
+                                  <span className="text-green-300 font-medium">
+                                    {">"} {job.company}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="space-y-2 text-sm text-green-400 font-mono">
+                            <p>period: {job.period}</p>
+                            <p>location: {job.location}</p>
+                          </div>
+                        </div>
+
+                        <div className="lg:col-span-8 space-y-4">
+                          {job.description && (
+                            <p className="text-green-300 font-medium font-mono">
+                              {"// "}
+                              {job.description}
+                            </p>
+                          )}
+
+                          <ul className="space-y-3 font-mono">
+                            {job.achievements.map((achievement, i) => (
+                              <li key={i} className="flex items-start space-x-3 text-green-400">
+                                <span className="text-green-300 mt-1">{">"}</span>
+                                <span>{achievement}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Education Section */}
+          <section id="education" className="py-32 bg-black">
+            <div className="max-w-7xl mx-auto px-8">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className="text-center mb-20"
+              >
+                <div className="space-y-4">
+                  <h2 className="text-5xl font-black text-green-400 neon-glow">{">"} EDUCATION.db</h2>
+                  <div className="w-24 h-1 bg-green-400 mx-auto" />
+                </div>
+              </motion.div>
+
+              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                {[
+                  {
+                    degree: "M.Tech in Information Security",
+                    institution: "College of Engineering, Thiruvananthapuram, India",
+                    year: "2018",
+                  },
+                  {
+                    degree: "B.Tech in Computer Science",
+                    institution: "College of Engineering, Chengannur, India",
+                    year: "2015",
+                  },
+                ].map((edu, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="terminal-border bg-black/50 p-8 pixel-corners h-full">
+                      <div className="space-y-4">
+                        <div className="w-12 h-12 terminal-border bg-black/50 flex items-center justify-center pixel-corners">
+                          <Database className="w-6 h-6 text-green-400" />
+                        </div>
+
+                        <div className="space-y-2 font-mono">
+                          <h3 className="text-xl font-bold text-green-400">{edu.degree}</h3>
+                          <p className="text-green-300">{edu.institution}</p>
+                          <p className="text-green-400">year: {edu.year}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Contact Section */}
+          <section id="contact" className="py-32 bg-black/50 relative overflow-hidden">
+            <div className="max-w-7xl mx-auto px-8 relative z-10">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className="text-center mb-20"
+              >
+                <div className="space-y-4">
+                  <h2 className="text-5xl font-black text-green-400 neon-glow">{">"} CONNECT.sh</h2>
+                  <div className="w-24 h-1 bg-green-400 mx-auto" />
+                  <p className="text-xl text-green-300 max-w-2xl mx-auto font-mono">
+                    {"// Ready to initialize connection? Execute collaboration protocol."}
+                  </p>
+                </div>
+              </motion.div>
+
+              <div className="grid lg:grid-cols-2 gap-16 items-start">
+                {/* Contact Information */}
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  viewport={{ once: true }}
+                  className="space-y-8"
+                >
+                  <div className="space-y-6">
+                    <h3 className="text-3xl font-bold text-green-400 font-mono">{">"} get_in_touch()</h3>
+                    <p className="text-lg text-green-300 leading-relaxed font-mono">
+                      {"// Currently available for new opportunities where I can leverage"}
+                      <br />
+                      {"// frontend expertise and product mindset. Let's build something amazing."}
+                    </p>
+                  </div>
+
+                  <div className="grid gap-6">
+                    {[
+                      {
+                        icon: Mail,
+                        label: "email",
+                        value: "sidharth@sidh.dev",
+                        href: "mailto:sidharth@sidh.dev",
+                      },
+                      { icon: Phone, label: "phone", value: "+91-97461 63694", href: "tel:+919746163694" },
+                      {
+                        icon: MapPin,
+                        label: "location",
+                        value: "Thiruvananthapuram, India",
+                        href: "https://en.wikipedia.org/wiki/Thiruvananthapuram",
+                      },
+                      {
+                        icon: Linkedin,
+                        label: "linkedin",
+                        value: "linkedin.com/in/sidharthd/",
+                        href: "https://linkedin.com/in/sidharthd/",
+                      },
+                    ].map((contact, index) => (
+                      <motion.a
+                        key={contact.label}
+                        href={contact.href}
+                        target={contact.href.startsWith("http") ? "_blank" : undefined}
+                        rel={contact.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ duration: 0.2 }}
+                        className="group flex items-center space-x-4 p-6 terminal-border bg-black/50 pixel-corners hover:bg-green-400/5 transition-all duration-300"
+                      >
+                        <div className="w-14 h-14 terminal-border bg-black/50 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 pixel-corners">
+                          <contact.icon className="w-7 h-7 text-green-400" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-green-300 uppercase tracking-wide font-mono">
+                            {contact.label}:
+                          </p>
+                          <p className="text-lg font-medium text-green-400 group-hover:text-green-300 transition-colors flex items-center gap-2 font-mono">
+                            {contact.value}
+                            {contact.href.startsWith("http") && (
+                              <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            )}
+                          </p>
+                        </div>
+                      </motion.a>
+                    ))}
+                  </div>
+
+                  {/* Availability Status */}
+                  <div className="p-6 terminal-border bg-green-400/5 pixel-corners">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse flex-shrink-0" />
+                      <p className="text-sm font-medium text-green-400 font-mono">status: available_for_projects</p>
+                    </div>
+                    <p className="text-sm text-green-300 font-mono">
+                      {"// Currently accepting opportunities for frontend development"}
+                      <br />
+                      {"// and product-focused engineering roles."}
+                      <br />
+                      {"// Response time: Usually within 24 hours."}
+                    </p>
+                  </div>
+                </motion.div>
+
+                {/* Contact Form */}
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="terminal-border bg-black/50 p-8 pixel-corners">
+                    <h3 className="text-2xl font-bold text-green-400 mb-8 font-mono">{">"} send_message.exe</h3>
+
+                    {/* Success Message */}
+                    {submitStatus === "success" && (
+                      <div className="mb-6 p-4 terminal-border bg-green-400/10 pixel-corners">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-5 h-5 bg-green-400 rounded-full flex items-center justify-center">
+                            <span className="text-black text-xs">✓</span>
+                          </div>
+                          <p className="text-green-400 font-medium font-mono">
+                            {"// Message sent successfully! I'll get back to you soon."}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Error Message */}
+                    {submitStatus === "error" && (
+                      <div className="mb-6 p-4 terminal-border bg-red-400/10 pixel-corners">
+                        <p className="text-red-400 font-mono">
+                          {"// Error: Something went wrong. Please try again or contact me directly."}
+                        </p>
+                      </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <label htmlFor="name" className="block text-sm font-medium text-green-300 mb-2 font-mono">
+                            name: *
+                          </label>
+                          <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            required
+                            disabled={isSubmitting}
+                            className="w-full px-4 py-3 terminal-border bg-black/50 focus:bg-black/70 transition-all duration-300 text-green-400 disabled:opacity-50 font-mono pixel-corners"
+                            placeholder="your_name"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="email" className="block text-sm font-medium text-green-300 mb-2 font-mono">
+                            email: *
+                          </label>
+                          <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            required
+                            disabled={isSubmitting}
+                            className="w-full px-4 py-3 terminal-border bg-black/50 focus:bg-black/70 transition-all duration-300 text-green-400 disabled:opacity-50 font-mono pixel-corners"
+                            placeholder="your.email@domain.com"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label htmlFor="subject" className="block text-sm font-medium text-green-300 mb-2 font-mono">
+                          subject: *
+                        </label>
+                        <input
+                          type="text"
+                          id="subject"
+                          name="subject"
+                          required
+                          disabled={isSubmitting}
+                          className="w-full px-4 py-3 terminal-border bg-black/50 focus:bg-black/70 transition-all duration-300 text-green-400 disabled:opacity-50 font-mono pixel-corners"
+                          placeholder="what_is_this_about"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="message" className="block text-sm font-medium text-green-300 mb-2 font-mono">
+                          message: *
+                        </label>
+                        <textarea
+                          id="message"
+                          name="message"
+                          rows={5}
+                          required
+                          disabled={isSubmitting}
+                          className="w-full px-4 py-3 terminal-border bg-black/50 focus:bg-black/70 transition-all duration-300 text-green-400 resize-none disabled:opacity-50 font-mono pixel-corners"
+                          placeholder="// Tell me about your project or just say hello!"
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full terminal-border bg-black hover:bg-green-400/10 text-green-400 py-4 text-lg font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group font-mono pixel-corners"
+                      >
+                        {isSubmitting ? (
+                          <div className="flex items-center justify-center space-x-2">
+                            <div className="w-4 h-4 border-2 border-green-400 border-t-transparent rounded-full animate-spin" />
+                            <span>{">"} sending...</span>
+                          </div>
+                        ) : (
+                          <>
+                            {">"} execute_send()
+                            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform inline" />
+                          </>
+                        )}
+                      </button>
+                    </form>
+
+                    <div className="mt-6 pt-6 border-t border-green-400/30">
+                      <p className="text-sm text-green-300 text-center font-mono">
+                        {"// Prefer email? Drop me a line at "}
+                        <a
+                          href="mailto:sidharth@sidh.dev"
+                          className="text-green-400 hover:text-green-300 font-medium transition-colors"
+                        >
+                          sidharth@sidh.dev
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        {/* Footer */}
+        <footer className="py-12 px-8 bg-black terminal-border">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+              <div className="flex items-center space-x-4">
+                <div className="w-8 h-8 terminal-border bg-black/50 flex items-center justify-center pixel-corners">
+                  <span className="text-green-400 font-bold text-sm font-mono">SD</span>
+                </div>
+                <p className="text-green-400 font-mono">
+                  {"// © "}
+                  {new Date().getFullYear()} Sidharth Devaraj. Crafted with precision.
+                </p>
+              </div>
+
+              <div className="flex items-center space-x-6">
+                <a href="mailto:sidharth@sidh.dev" className="text-green-400 hover:text-green-300 transition-colors">
+                  <Mail className="w-5 h-5" />
+                </a>
+                <a
+                  href="https://linkedin.com/in/sidharthd/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-400 hover:text-green-300 transition-colors"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    )
+  }
+
+  // Modern design (original)
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 relative overflow-x-hidden">
       <ThemeSelector />
+      <DesignToggle />
 
       {/* Geometric Background Elements */}
       <div className="fixed inset-0 pointer-events-none">
