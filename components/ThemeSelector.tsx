@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import { Sun, Moon, Monitor } from "lucide-react"
 import { useTheme } from "@/contexts/ThemeContext"
 
@@ -18,82 +18,54 @@ export function ThemeSelector() {
   const currentTheme = themes.find((t) => t.id === theme) || themes[2]
   const CurrentIcon = currentTheme.icon
 
-  const handleToggle = () => {
-    setIsOpen(!isOpen)
-  }
-
-  const handleThemeSelect = (themeId: typeof theme) => {
-    setTheme(themeId)
-    setIsOpen(false)
-  }
-
-  const handleBackdropClick = () => {
-    setIsOpen(false)
-  }
-
   return (
-    <>
-      <div className="fixed top-20 sm:top-24 right-4 sm:right-6 z-50">
-        <div className="relative">
-          {/* Main Toggle Button */}
-          <button
-            onClick={handleToggle}
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group touch-manipulation"
-            aria-label="Toggle theme selector"
-            aria-expanded={isOpen}
-          >
-            <CurrentIcon className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-300 group-hover:scale-110 transition-transform duration-200" />
-          </button>
+    <div className="fixed top-24 right-6 z-50">
+      <div className="relative">
+        {/* Main Toggle Button */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-10 h-10 rounded-lg bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center group"
+        >
+          <CurrentIcon className="w-5 h-5 text-gray-700 dark:text-gray-300 group-hover:scale-110 transition-transform duration-200" />
+        </button>
 
-          {/* Theme Options */}
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: -5 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: -5 }}
-                transition={{ duration: 0.15 }}
-                className="absolute top-12 sm:top-14 right-0 w-36 sm:w-40 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 shadow-xl overflow-hidden z-10"
-              >
-                {themes.map((themeOption) => {
-                  const Icon = themeOption.icon
-                  const isActive = theme === themeOption.id
-
-                  return (
-                    <button
-                      key={themeOption.id}
-                      onClick={() => handleThemeSelect(themeOption.id)}
-                      className={`w-full flex items-center space-x-3 px-4 py-3 text-sm font-medium transition-colors duration-150 touch-manipulation ${
-                        isActive
-                          ? "bg-rose-500 text-white"
-                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600"
-                      }`}
-                      aria-label={`Switch to ${themeOption.name} theme`}
-                    >
-                      <Icon className="w-4 h-4 flex-shrink-0" />
-                      <span>{themeOption.name}</span>
-                    </button>
-                  )
-                })}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Click outside to close - improved for mobile */}
-      <AnimatePresence>
+        {/* Theme Options */}
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-transparent"
-            onClick={handleBackdropClick}
-            onTouchStart={handleBackdropClick}
-          />
+            initial={{ opacity: 0, scale: 0.95, y: -5 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -5 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-12 right-0 w-32 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 shadow-xl overflow-hidden"
+          >
+            {themes.map((themeOption) => {
+              const Icon = themeOption.icon
+              const isActive = theme === themeOption.id
+
+              return (
+                <button
+                  key={themeOption.id}
+                  onClick={() => {
+                    setTheme(themeOption.id)
+                    setIsOpen(false)
+                  }}
+                  className={`w-full flex items-center space-x-2 px-3 py-2 text-sm transition-colors duration-150 ${
+                    isActive
+                      ? "bg-rose-500 text-white"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{themeOption.name}</span>
+                </button>
+              )
+            })}
+          </motion.div>
         )}
-      </AnimatePresence>
-    </>
+      </div>
+
+      {/* Click outside to close */}
+      {isOpen && <div className="fixed inset-0 z-[-1]" onClick={() => setIsOpen(false)} />}
+    </div>
   )
 }
