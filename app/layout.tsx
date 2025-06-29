@@ -8,11 +8,11 @@ import { DesignProvider } from "@/contexts/DesignContext"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Sidharth Devaraj - Senior Software Engineer",
+  title: "Sidharth Devaraj - Software Engineer",
   description: "Frontend specialist bridging technical excellence and product strategy",
   keywords: [
     "Sidharth Devaraj",
-    "Senior Software Engineer",
+    "Software Engineer",
     "Frontend Developer",
     "React Developer",
     "TypeScript",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://sidh.dev",
-    title: "Sidharth Devaraj - Senior Software Engineer",
+    title: "Sidharth Devaraj - Software Engineer",
     description: "Frontend specialist bridging technical excellence and product strategy",
     siteName: "Sidharth Devaraj Portfolio",
     images: [
@@ -52,13 +52,13 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Sidharth Devaraj - Senior Software Engineer",
+        alt: "Sidharth Devaraj - Software Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sidharth Devaraj - Senior Software Engineer",
+    title: "Sidharth Devaraj - Software Engineer",
     description: "Frontend specialist bridging technical excellence and product strategy",
     images: ["/og-image.jpg"],
   },
@@ -87,8 +87,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               name: "Sidharth Devaraj",
-              jobTitle: "Senior Software Engineer",
-              description: "Senior Software Engineer and Frontend Specialist with 7+ years of experience",
+              jobTitle: "Software Engineer",
+              description: "Software Engineer and Frontend Specialist with 7+ years of experience",
               url: "https://sidh.dev",
               email: "sidharth@sidh.dev",
               telephone: "+91-97461-63694",
@@ -117,13 +117,6 @@ export default function RootLayout({
                   "@type": "EducationalOrganization",
                   name: "College of Engineering, Chengannur",
                   description: "B.Tech in Computer Science",
-                },
-              ],
-              worksFor: [
-                {
-                  "@type": "Organization",
-                  name: "1Centre",
-                  description: "Senior Front-End Engineer",
                 },
               ],
             }),
