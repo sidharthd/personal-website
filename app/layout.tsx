@@ -1,15 +1,17 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import "./globals.css"
-import { ThemeProvider } from "@/contexts/ThemeContext"
-import { DesignProvider } from "@/contexts/DesignContext"
+import type React from "react";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import { DesignProvider } from "@/contexts/DesignContext";
+import { Analytics } from "@vercel/analytics/next";
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Sidharth Devaraj - Software Engineer",
-  description: "Frontend specialist bridging technical excellence and product strategy",
+  description:
+    "Frontend specialist bridging technical excellence and product strategy",
   keywords: [
     "Sidharth Devaraj",
     "Software Engineer",
@@ -45,7 +47,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://sidh.dev",
     title: "Sidharth Devaraj - Software Engineer",
-    description: "Frontend specialist bridging technical excellence and product strategy",
+    description:
+      "Frontend specialist bridging technical excellence and product strategy",
     siteName: "Sidharth Devaraj Portfolio",
     images: [
       {
@@ -59,20 +62,21 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Sidharth Devaraj - Software Engineer",
-    description: "Frontend specialist bridging technical excellence and product strategy",
+    description:
+      "Frontend specialist bridging technical excellence and product strategy",
     images: ["/og-image.jpg"],
   },
   alternates: {
     canonical: "https://sidh.dev",
   },
   category: "technology",
-    generator: 'v0.dev'
-}
+  generator: "v0.dev",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -88,7 +92,8 @@ export default function RootLayout({
               "@type": "Person",
               name: "Sidharth Devaraj",
               jobTitle: "Software Engineer",
-              description: "Software Engineer and Frontend Specialist with 7+ years of experience",
+              description:
+                "Software Engineer and Frontend Specialist with 7+ years of experience",
               url: "https://sidh.dev",
               email: "sidharth@sidh.dev",
               telephone: "+91-97461-63694",
@@ -97,7 +102,10 @@ export default function RootLayout({
                 addressLocality: "Thiruvananthapuram",
                 addressCountry: "India",
               },
-              sameAs: ["https://linkedin.com/in/sidharth/", "https://github.com/sidharth"],
+              sameAs: [
+                "https://linkedin.com/in/sidharth/",
+                "https://github.com/sidharth",
+              ],
               knowsAbout: [
                 "JavaScript",
                 "TypeScript",
@@ -126,8 +134,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <DesignProvider>{children}</DesignProvider>
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }
