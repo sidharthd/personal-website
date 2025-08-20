@@ -95,7 +95,7 @@ export default function RootLayout({
               description:
                 "Software Engineer and Frontend Specialist with 7+ years of experience",
               url: "https://sidh.dev",
-              email: "hi@sidh.dev",
+              email: "sid@sidharthd.dev",
               telephone: "+91-97461-63694",
               address: {
                 "@type": "PostalAddress",

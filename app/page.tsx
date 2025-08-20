@@ -927,8 +927,8 @@ export default function Portfolio() {
                       {
                         icon: Mail,
                         label: "email",
-                        value: "hi@sidh.dev",
-                        href: "mailto:hi@sidh.dev",
+                        value: "sid@sidharthd.dev",
+                        href: "mailto:sid@sidharthd.dev",
                       },
                       {
                         icon: MapPin,
@@ -1129,10 +1129,10 @@ export default function Portfolio() {
                       <p className="text-sm text-green-300 text-center font-mono">
                         {"// Prefer email? Drop me a line at "}
                         <a
-                          href="mailto:hi@sidh.dev"
+                          href="mailto:sid@sidharthd.dev"
                           className="text-green-400 hover:text-green-300 font-medium transition-colors"
                         >
-                          hi@sidh.dev
+                          sid@sidharthd.dev
                         </a>
                       </p>
                     </div>
@@ -1162,7 +1162,7 @@ export default function Portfolio() {
 
               <div className="flex items-center space-x-6">
                 <a
-                  href="mailto:hi@sidh.dev"
+                  href="mailto:sid@sidharthd.dev"
                   className="text-green-400 hover:text-green-300 transition-colors"
                 >
                   <Mail className="w-5 h-5" />
@@ -1872,8 +1872,8 @@ export default function Portfolio() {
                     {
                       icon: Mail,
                       label: "Email",
-                      value: "hi@sidh.dev",
-                      href: "mailto:hi@sidh.dev",
+                      value: "sid@sidharthd.dev",
+                      href: "mailto:sid@sidharthd.dev",
                       color: "rose",
                     },
                     {
@@ -2088,10 +2088,10 @@ export default function Portfolio() {
                     <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
                       Prefer email? Drop me a line at{" "}
                       <a
-                        href="mailto:hi@sidh.dev"
+                        href="mailto:sid@sidharthd.dev"
                         className="text-rose-500 hover:text-rose-600 font-medium transition-colors"
                       >
-                        hi@sidh.dev
+                        sid@sidharthd.dev
                       </a>
                     </p>
                   </div>
@@ -2122,7 +2122,7 @@ export default function Portfolio() {
 
             <div className="flex items-center space-x-6">
               <a
-                href="mailto:hi@sidh.dev"
+                href="mailto:sid@sidharthd.dev"
                 className="text-gray-400 hover:text-rose-500 transition-colors"
               >
                 <Mail className="w-5 h-5" />
